@@ -165,8 +165,8 @@ function setOrderList(codeResult) {
 		console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
 		var locName = data[i].City + data[i].Area + data[i].DeliveryStopAddr;
-		var count = data[i].DetailQuantity;
-		var cId = data[i].Ship_To_Address;
+		var count = data[i].TotalVolume;//总数量
+		var cId = data[i].Ship_To_Address;//配送点
 		var lId = data[i].Ship_To_Name;
 		var deliveryStopAddr = data[i].DeliveryStopAddr; //配送点名称
 		var city = data[i].City; //城市名称
