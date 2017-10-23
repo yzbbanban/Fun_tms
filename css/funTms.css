@@ -57,8 +57,9 @@ a {
 }
 
 .order_foot_num {
-	width: 160px;
+	width: 100px;
 	margin: 0 auto;
+	padding-top: 5px;
 	padding-bottom: 30px;
 }
 

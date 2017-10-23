@@ -7,9 +7,10 @@ $(function() {
 		 */
 		urlGet: function() {
 			var aQuery = window.location.href; //取得Get参数 
-
+			aQuery = aQuery.replace(/%27/g, "\"");
 			aQuery = aQuery.substring(aQuery.lastIndexOf("?") + 1, aQuery.length);
-			//			alert(aQuery);
+			aQuery = decodeURI(decodeURI(aQuery)); //js 解码  
+			console.log(aQuery);
 			var aGET = new Array();
 			aGET = aQuery.split("=");
 			return aGET[1];
@@ -28,70 +29,54 @@ function allocatedOrderList(allocatedOrder) {
 	if(allocatedOrder == null) {
 		return;
 	}
-	allocatedOrder = allocatedOrder.replace(/%22/g, '"');
+	//	allocatedOrder = allocatedOrder.replace(/%22/g, '"');
 
 	var aoJs = JSON.parse(allocatedOrder);
-	$.ajax({
-		type: "get",
-		url: "data/order_detail.json",
-		data: {
 
-		},
-		dataType: "json",
-		success: function(result) {
-			if(result.code == 0) {
-
-				getAllocatedOrderData(result.result, aoJs);
-			} else {
-				alert(result.message);
-			}
-		},
-		error: function() {
-			alert("无此数据");
-		}
-	});
+	getAllocatedOrderData(aoJs);
 
 }
 
-function getAllocatedOrderData(data, aoJs) {
+function getAllocatedOrderData(aoJs) {
 	//	alert(data.length);
 	var allocated_order_loc_count = 0;
 	var allocated_order_loc_box_count = 0;
-	for(var j = 0; j < aoJs.orderJs.length; j++) {
-		for(var i = 0; i < data.length; i++) {
+	var orderNoJs="{orderNo,"
+	for(var i = 0; i < aoJs.orderJs.length; i++) {
+		var id = JSON.stringify(aoJs.orderJs[i]);
+		id = id.replace(/"/g, "'");
+		var orderNum = aoJs.orderJs[i].OrderNo; //订单号
+		var locName = aoJs.orderJs[i].DeliveryStopName; //配送点名字
+		var city = aoJs.orderJs[i].City; //城市
+		var loc = aoJs.orderJs[i].DeliveryStopAddr; //配送点地址
+		var count = parseInt(aoJs.orderJs[i].TotalVolume); //总箱数
 
-			var id = data[i].id;
-			var orderNum = data[i].orderNum;
-			var locName = data[i].locName;
-			var city = data[i].city;
-			var loc = data[i].loc;
-			var count = data[i].count;
-			var cId = data[i].cityId;
-			var lId = data[i].locId;
+		var allocatedOrder = $("#allocated_order");
+		var aso = "";
+		orderNoJs+=orderNum+",";
+		//配送点、箱数
 
-			var allocatedOrder = $("#allocated_order");
-			var aso = "";
+		allocated_order_loc_count++;
+		allocated_order_loc_box_count += count;
+		console.log(allocated_order_loc_box_count);
+		$("#allocated_order_loc_count").text(allocated_order_loc_count);
+		$("#allocated_order_loc_box_count").text(allocated_order_loc_box_count);
+		aso = setallocatedOrderData(id, orderNum, locName, loc, city, count);
+		var $aso = $(aso);
+		allocatedOrder.append($aso);
 
-			//			alert(aoJs.orderJs[j].orderId);
-			if(id == aoJs.orderJs[j].orderId) {
-
-//				console.log(allocated_order_loc_count);
-//				console.log(count);
-				//配送点、箱数
-
-				allocated_order_loc_count++;
-				allocated_order_loc_box_count += count;
-
-				$("#allocated_order_loc_count").text(allocated_order_loc_count);
-				$("#allocated_order_loc_box_count").text(allocated_order_loc_box_count);
-				aso = setallocatedOrderData(id, orderNum, locName, loc, city, count);
-
-			}
-			var $aso = $(aso);
-			allocatedOrder.append($aso);
-
-		}
 	}
+	orderNoJs = orderNoJs.substring(0, orderNoJs.lastIndexOf(","))+"}";
+	console.log(orderNoJs);
+	makeCode(orderNoJs);
+}
+
+function makeCode(orderNoJs) {
+	var qrcode = new QRCode(document.getElementById("qrcode"), {
+		width: 100,
+		height: 100
+	});
+	qrcode.makeCode(orderNoJs);
 }
 
 function setallocatedOrderData(id, orderNum, locName, loc, city, count) {

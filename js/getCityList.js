@@ -37,21 +37,21 @@ function getDiction() {
 //	console.log("getDiction");
 	$("#city_list").show();
 	$("#order_list").hide();
-	var deliveryStopAddrs=getCookie("deliveryStopAddrs");
-	setDiction(deliveryStopAddrs);
+	var deliveryStopNames=getCookie("deliveryStopNames");
+	setDiction(deliveryStopNames);
 }
 
-function setDiction(deliveryStopAddrs) {
-	console.log("deliveryStopAddrs： "+deliveryStopAddrs);
+function setDiction(deliveryStopNames) {
+	console.log("deliveryStopNames： "+deliveryStopNames);
 	var cityListDetail = $("#city_list_detail");
 	cityListDetail.html("");
-	var deliveryStopAddrs=deliveryStopAddrs.split(",")
+	var deliveryStopNames=deliveryStopNames.split(",")
 //	console.log("deliveryStopNames: "+deliveryStopNames[0]);
 	var sCity = "";
 	//	var cityResult = JSON.parse(deliveryStopNames);
 	//				alert(cityResult.result.length);
-	for(var i = 0; i < deliveryStopAddrs.length; i++) {
-		var loc = deliveryStopAddrs[i];
+	for(var i = 0; i < deliveryStopNames.length; i++) {
+		var loc = deliveryStopNames[i];
 		//		var locId = deliveryStopNames[i];
 		//					console.log(loc);
 		sCity = getSCity(loc);

@@ -8,7 +8,8 @@ function orderDiversion() {
 	$("input").each(function() {
 		var i = 0;
 		if($(this).is(':checked')) {
-			orderJs += '{"orderId":' + $(this).val() + "},";
+//			orderJs += '{"orderId":' + $(this).val() + "},";
+			orderJs+= $(this).val()+ ",";
 		}
 	});
 	orderJs = orderJs.substring(0, orderJs.lastIndexOf(","));

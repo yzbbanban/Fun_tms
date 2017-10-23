@@ -9,12 +9,12 @@ $(function() {
 			var aQuery = window.location.href; //取得Get参数 
 			aQuery = aQuery.replace(/%27/g, "\"");
 
-			console.log(aQuery);
+//			console.log(aQuery);
 
 			aQuery = aQuery.substring(aQuery.lastIndexOf("?") + 1, aQuery.length);
 
 			aQuery = decodeURI(decodeURI(aQuery)); //js 解码  
-			console.log(aQuery);
+//			console.log(aQuery);
 			var aGET = new Array();
 			aGET = aQuery.split("=");
 			return aGET[1];

@@ -53,24 +53,13 @@
 			<a class="" href="javascript:;">
 				<div id="order_bottom" class="order_foot_num">
 					<img src="img/order.png" alt="" class="order_foot_img">
-					<p class="order_foot_p" id="transfer_order">转运单号:12345678</p>
+					<p class="order_foot_p" id="transfer_order">转运单号</p>
 				</div>
 
 			</a>
 
 		</div>
-		<script type="text/javascript">
-			$(function(){
-				makeCode();
-			});
-			var qrcode = new QRCode(document.getElementById("qrcode"), {
-				width: 100,
-				height: 100
-			});
-			function makeCode() {
-				qrcode.makeCode(12345678);
-			}
-		</script>
+
 	</body>
 
 </html>

@@ -156,7 +156,7 @@ function setOrderList(codeResult) {
 	orderListMenu.html("");
 	var sDiv = "";
 	var cities = [];
-	var deliveryStopAddrs = [];
+	var deliveryStopNames = [];
 	for(var i = 0; i < data.length; i++) {
 		var id = JSON.stringify(data[i]);
 		id=id.replace(/"/g,"'");
@@ -164,11 +164,11 @@ function setOrderList(codeResult) {
 //		var id = data[i];
 		console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
-		var locName = data[i].City + data[i].Area + data[i].DeliveryStopAddr;
+		var locName = data[i].DeliveryStopName;
 		var count = data[i].TotalVolume;//总数量
-		var cId = data[i].Ship_To_Address;//配送点
+		var cId = data[i].DeliveryStopAddr;//配送点地址
 		var lId = data[i].Ship_To_Name;
-		var deliveryStopAddr = data[i].DeliveryStopAddr; //配送点名称
+		var deliveryStopName = data[i].DeliveryStopName; //配送点名称
 		var city = data[i].City; //城市名称
 		//		var deliveryStopName = data[i].DeliveryStopName; 
 		//TODO 添加城市元素 city
@@ -177,8 +177,8 @@ function setOrderList(codeResult) {
 			cities.push(city);
 		}
 		//TODO 添加配送点元素 deliveryStopName
-		if(deliveryStopAddrs.indexOf(deliveryStopAddr) == -1) {
-			deliveryStopAddrs.push(deliveryStopAddr);
+		if(deliveryStopNames.indexOf(deliveryStopName) == -1) {
+			deliveryStopNames.push(deliveryStopName);
 		}
 
 		//城市以及配送点筛选
@@ -191,7 +191,7 @@ function setOrderList(codeResult) {
 			for(var j = 0; j < jp.cities.length; j++) {
 
 				var cI = jp.cities[j].city;
-				if(city == cI || deliveryStopAddr == cI) {
+				if(city == cI || deliveryStopName == cI) {
 					//					//生成界面
 					//										console.log("j:" + jp.cities[j].city);
 					sDiv = getOrderData(orderNum, locName, count, id);
@@ -209,10 +209,10 @@ function setOrderList(codeResult) {
 	//	console.log("codeResult: " + getCookie("codeResult"));
 
 	console.log("cities: " + cities);
-	console.log("deliveryStopNames: " + deliveryStopAddrs);
+	console.log("deliveryStopNames: " + deliveryStopName);
 	//初始化城市、配送点界面
 	addCookie("cities", cities, 2);
-	addCookie("deliveryStopAddrs", deliveryStopAddrs, 2);
+	addCookie("deliveryStopNames", deliveryStopNames, 2);
 
 }
 /**
@@ -270,7 +270,7 @@ function getOrderData(orderNum, locName, count, id) {
 	sd += '<div class="weui-cells weui-cells_checkbox">';
 	sd += '<label class="weui-cell weui-check__label" >';
 	sd += '<div class="weui-cell__hd">';
-	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value=\'' + id + '\'/>';
+	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value="' + id + '"/>';
 	sd += '<i class="weui-icon-checked"></i>';
 	sd += '</div>';
 	sd += '<div class="weui-panel__bd" style="font-size: 10px;width: 100%;">';
