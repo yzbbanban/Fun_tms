@@ -1,15 +1,20 @@
 function getCity() {
+//	console.log("getCity");
 	$("#city_list").show();
 	$("#order_list").hide();
+	var cities=getCookie("cities");
+	setCity(cities);
+	
 }
 
 function setCity(cities) {
-	//	alert("sss"); 
+	console.log("cities： "+cities);
 	//获取城市列表
 	var cityListDetail = $("#city_list_detail");
 	//重新加载清空界面内容
 	cityListDetail.html("");
 	var sCity = "";
+	var cities=cities.split(",");
 	//	var cityResult = JSON.parse(cities);
 	//				alert(cityResult.result.length);
 	for(var i = 0; i < cities.length; i++) {
@@ -29,21 +34,24 @@ function setCity(cities) {
 }
 
 function getDiction() {
+//	console.log("getDiction");
 	$("#city_list").show();
 	$("#order_list").hide();
+	var deliveryStopAddrs=getCookie("deliveryStopAddrs");
+	setDiction(deliveryStopAddrs);
 }
 
-function setDiction(deliveryStopNames) {
-	//	alert("aaa: " + deliveryStopNames);
+function setDiction(deliveryStopAddrs) {
+	console.log("deliveryStopAddrs： "+deliveryStopAddrs);
 	var cityListDetail = $("#city_list_detail");
 	cityListDetail.html("");
-	
+	var deliveryStopAddrs=deliveryStopAddrs.split(",")
 //	console.log("deliveryStopNames: "+deliveryStopNames[0]);
 	var sCity = "";
 	//	var cityResult = JSON.parse(deliveryStopNames);
 	//				alert(cityResult.result.length);
-	for(var i = 0; i < deliveryStopNames.length; i++) {
-		var loc = deliveryStopNames[i];
+	for(var i = 0; i < deliveryStopAddrs.length; i++) {
+		var loc = deliveryStopAddrs[i];
 		//		var locId = deliveryStopNames[i];
 		//					console.log(loc);
 		sCity = getSCity(loc);
@@ -59,6 +67,7 @@ function setDiction(deliveryStopNames) {
 /**
  * 设置城市json数据
  */
+
 function setCityList() {
 	delCookie("cityJs"); //清除筛选内容
 

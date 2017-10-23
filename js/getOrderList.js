@@ -35,7 +35,7 @@ $(function() {
 			//SetCookie("");//存储装载号
 			//SetCookie("");//存储weinxinID
 			//558485632
-			getCarDetail("170615", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
+			getCarDetail("558485632", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
 		}
 	});
 	$.getDetail($.urlGet());
@@ -99,7 +99,7 @@ function getCarDetail(orderNum, weixinId) {
 		},
 		error: function() {
 			alert("车辆信息获取失败");
-			console.log("2.error");
+			//			console.log("2.error");
 
 		}
 	});
@@ -156,24 +156,29 @@ function setOrderList(codeResult) {
 	orderListMenu.html("");
 	var sDiv = "";
 	var cities = [];
-	var deliveryStopNames = [];
+	var deliveryStopAddrs = [];
 	for(var i = 0; i < data.length; i++) {
-		var id = data[i].id;
+		var id = JSON.stringify(data[i]);
+		id=id.replace(/"/g,"'");
+ 
+//		var id = data[i];
+		console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
-		var locName = data[i].Province + data[i].DeliveryStopAddr + data[i].Area;
+		var locName = data[i].City + data[i].Area + data[i].DeliveryStopAddr;
 		var count = data[i].DetailQuantity;
 		var cId = data[i].Ship_To_Address;
 		var lId = data[i].Ship_To_Name;
-		var deliveryStopAddr=data[i].DeliveryStopAddr;
+		var deliveryStopAddr = data[i].DeliveryStopAddr; //配送点名称
 		var city = data[i].City; //城市名称
-		var deliveryStopName = data[i].DeliveryStopName; //配送点名称
+		//		var deliveryStopName = data[i].DeliveryStopName; 
 		//TODO 添加城市元素 city
-		if(cities.indexOf(deliveryStopAddr) != 0) {
-			cities.push(deliveryStopAddr);
+		if(cities.indexOf(city) == -1) {
+			console.log("city: " + city + "index： " + cities.indexOf(city));
+			cities.push(city);
 		}
 		//TODO 添加配送点元素 deliveryStopName
-		if(deliveryStopNames.indexOf(deliveryStopAddr) != 0) {
-			deliveryStopNames.push(deliveryStopAddr);
+		if(deliveryStopAddrs.indexOf(deliveryStopAddr) == -1) {
+			deliveryStopAddrs.push(deliveryStopAddr);
 		}
 
 		//城市以及配送点筛选
@@ -186,7 +191,7 @@ function setOrderList(codeResult) {
 			for(var j = 0; j < jp.cities.length; j++) {
 
 				var cI = jp.cities[j].city;
-				if(cId == cI || lId == cI) {
+				if(city == cI || deliveryStopAddr == cI) {
 					//					//生成界面
 					//										console.log("j:" + jp.cities[j].city);
 					sDiv = getOrderData(orderNum, locName, count, id);
@@ -200,10 +205,15 @@ function setOrderList(codeResult) {
 		}
 
 	}
-	console.log("cities: "+cities);
-	console.log("deliveryStopNames: "+deliveryStopNames);
-	setCity(cities); //初始化城市、配送点界面
-	setDiction(deliveryStopNames)
+	//	addCookie("codeResult",codeResult,2);
+	//	console.log("codeResult: " + getCookie("codeResult"));
+
+	console.log("cities: " + cities);
+	console.log("deliveryStopNames: " + deliveryStopAddrs);
+	//初始化城市、配送点界面
+	addCookie("cities", cities, 2);
+	addCookie("deliveryStopAddrs", deliveryStopAddrs, 2);
+
 }
 /**
  * 设置订单列表图形
@@ -260,11 +270,11 @@ function getOrderData(orderNum, locName, count, id) {
 	sd += '<div class="weui-cells weui-cells_checkbox">';
 	sd += '<label class="weui-cell weui-check__label" >';
 	sd += '<div class="weui-cell__hd">';
-	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value="' + id + '" />';
+	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value=\'' + id + '\'/>';
 	sd += '<i class="weui-icon-checked"></i>';
 	sd += '</div>';
 	sd += '<div class="weui-panel__bd" style="font-size: 10px;width: 100%;">';
-	sd += '<a href="order_detail.html?order_id=' + id + '" class="weui-media-box weui-media-box_appmsg" >';
+	sd += '<a href="order_detail.html?order_id= '+id+'" class="weui-media-box weui-media-box_appmsg" >';
 	sd += '<div class="weui-media-box__bd">';
 	sd += '<div class="weui-cell">';
 	sd += '<div class="weui-cell__hd"><img src="img/order.png" alt="" class="order_img"></div>';
