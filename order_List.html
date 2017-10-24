@@ -13,6 +13,7 @@
 		<script src="js/cookie_util.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/getCityList.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/orderDiversion.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/completeOrder.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("#city_list").hide();
@@ -74,13 +75,13 @@
 						</div>
 						<div id="city_list" class="page">
 							<div class="weui-cells__title" id="check_all_city">全选</div>
-							<div id="city_list_detail" class="weui-cells weui-cells_checkbox"style="margin-bottom: 20%;z-index: 0;">
+							<div id="city_list_detail" class="weui-cells weui-cells_checkbox" style="margin-bottom: 20%;z-index: 0;">
 
 							</div>
 
 							<div class="weui-tabbar weui-footer weui-footer_fixed-bottom">
 								<div style="margin: 10px auto;">
-								<a href="#" id="set_city" class="weui-btn weui-btn_primary">确认</a>
+									<a href="#" id="set_city" class="weui-btn weui-btn_primary">确认</a>
 								</div>
 							</div>
 						</div>
@@ -99,9 +100,9 @@
 						<div id='close_dialog' style="float:right;"><img src='img/close.png'></div>
 					</div>
 					<div style="width: 80%;margin: 0 auto;">
-						<a href="take_photos.html?status=0" class="weui-dialog__btn weui-dialog__btn_default" style="color: #0bbfa2;">正常结案</a>
+						<a href="#" id="completeOrder" class="weui-dialog__btn weui-dialog__btn_default" style="color: #0bbfa2;">正常结案</a>
 						<p style="background: #e6e6e6;height: 1px;width: 100%;"></p>
-						<a href="take_photos.html?status=1" class="weui-dialog__btn weui-dialog__btn_default">异常结案</a>
+						<a href="#" id="errorOrder" class="weui-dialog__btn weui-dialog__btn_default">异常结案</a>
 					</div>
 
 				</div>
@@ -111,12 +112,15 @@
 		<script type="text/javascript">
 			$(function() {
 				var $iosDialog1 = $('#iosDialog1');
-
 				$('#dialogs').on('click', '.weui-dialog__btn', function() {
 					$(this).parents('.js_dialog').fadeOut(200);
 				});
-
 				$('#showOrderDialog').on('click', function() {
+					//未选择
+					if(0 == $("input:checked").length) {
+						alert("请选择订单");
+						return;
+					}
 					$iosDialog1.fadeIn(200);
 				});
 			});

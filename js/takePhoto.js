@@ -7,10 +7,10 @@ $(function() {
 			//			alert("sss");
 			var aQuery = window.location.href; //取得Get参数 
 			console.log(aQuery);
+			
 			aQuery = aQuery.substring(aQuery.lastIndexOf("?") + 1, aQuery.length);
 			//			alert(aQuery);
 			var aGET = new Array();
-
 			aGET = aQuery.split("=");
 			return aGET[1];
 		},

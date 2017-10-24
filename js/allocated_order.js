@@ -15,9 +15,7 @@ $(function() {
 			aGET = aQuery.split("=");
 			return aGET[1];
 		},
-
 		getOrder: function(allocatedOrder) {
-
 			allocatedOrderList(allocatedOrder);
 		}
 	});
@@ -41,7 +39,7 @@ function getAllocatedOrderData(aoJs) {
 	//	alert(data.length);
 	var allocated_order_loc_count = 0;
 	var allocated_order_loc_box_count = 0;
-	var orderNoJs="{orderNo,"
+	var orderNoJs = "{orderNo,"
 	for(var i = 0; i < aoJs.orderJs.length; i++) {
 		var id = JSON.stringify(aoJs.orderJs[i]);
 		id = id.replace(/"/g, "'");
@@ -53,7 +51,7 @@ function getAllocatedOrderData(aoJs) {
 
 		var allocatedOrder = $("#allocated_order");
 		var aso = "";
-		orderNoJs+=orderNum+",";
+		orderNoJs += orderNum + ",";
 		//配送点、箱数
 
 		allocated_order_loc_count++;
@@ -66,7 +64,7 @@ function getAllocatedOrderData(aoJs) {
 		allocatedOrder.append($aso);
 
 	}
-	orderNoJs = orderNoJs.substring(0, orderNoJs.lastIndexOf(","))+"}";
+	orderNoJs = orderNoJs.substring(0, orderNoJs.lastIndexOf(",")) + "}";
 	console.log(orderNoJs);
 	makeCode(orderNoJs);
 }

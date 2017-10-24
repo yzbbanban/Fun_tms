@@ -68,6 +68,7 @@ function getCarDetail(orderNum, weixinId) {
 			SetCookie("UserPho", jsCar[0].UserPho, 2);
 			SetCookie("WeChatID", jsCar[0].WeChatID, 2);
 			SetCookie("IPNO", jsCar[0].IPNO, 2);
+//			console.log(getCookie("UserName")+"："+getCookie("UserPho"));
 			//			console.log("1.success");
 		},
 		error: function() {
@@ -88,18 +89,19 @@ function getCarDetail(orderNum, weixinId) {
 		success: function(result) {
 			var resUser = $(result).find("string").text(); //获取其中的json字符串
 			//模拟数据
-			//			console.log("resUser: " + resUser);
+			//console.log("resUser: " + resUser);
 			var jsUser = JSON.parse(resUser); //转换为object对象
-			//			console.log("jsCar: " + jsUser[0].Comp)
+			//console.log("jsCar: " + jsUser[0].Comp)
 			SetCookie("UserID", jsUser[0].UserID, 2);
 			SetCookie("Comp", jsUser[0].Comp, 2);
 			SetCookie("SubComp", jsUser[0].UserPwd, 2);
+//			console.log(getCookie("Comp")+"："+getCookie("UserID"));
 			getOrderList();
-			//			console.log("2.success");
+			//console.log("2.success");
 		},
 		error: function() {
 			alert("车辆信息获取失败");
-			//			console.log("2.error");
+			//console.log("2.error");
 
 		}
 	});
@@ -111,7 +113,7 @@ function getCarDetail(orderNum, weixinId) {
  * 获取订单类表数据
  */
 function getOrderList() {
-	//	console.log("4");
+//		console.log(getCookie("Comp")+"："+getCookie("UserID"));
 	//数据加载弹窗
 	var $loadingToast = $('#loadingToast');
 	if($loadingToast.css('display') != 'none') return;

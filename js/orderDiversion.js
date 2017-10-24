@@ -1,5 +1,5 @@
 function orderDiversion() {
-	var orderJs = '{"orderJs":[';
+	var orderJs = '"orderJs":[';
 	//未选择
 	if(0 == $("input:checked").length) {
 		alert("请选择订单");
@@ -13,7 +13,7 @@ function orderDiversion() {
 		}
 	});
 	orderJs = orderJs.substring(0, orderJs.lastIndexOf(","));
-	orderJs += "]}";
+	orderJs += "]";
 //	alert(orderJs);
 	$(location).attr('href', 'allocated_order.html?order=' + orderJs);
 }
