@@ -35,7 +35,7 @@ $(function() {
 			//SetCookie("");//存储装载号
 			//SetCookie("");//存储weinxinID
 			//558485632
-			getCarDetail("558485632", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
+			getCarDetail("477838321", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
 		}
 	});
 	$.getDetail($.urlGet());
@@ -47,7 +47,6 @@ $(function() {
  */
 function getCarDetail(orderNum, weixinId) {
 	SetCookie("orderNum", orderNum, 2);
-
 	//	console.log("1");
 	$.ajax({
 		type: "post",
@@ -167,7 +166,7 @@ function setOrderList(codeResult) {
 		console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
 		var locName = data[i].DeliveryStopName;
-		var count = data[i].TotalVolume;//总数量
+		var count = data[i].TotalContainers;//总数量
 		var cId = data[i].DeliveryStopAddr;//配送点地址
 		var lId = data[i].Ship_To_Name;
 		var deliveryStopName = data[i].DeliveryStopName; //配送点名称
@@ -175,7 +174,7 @@ function setOrderList(codeResult) {
 		//		var deliveryStopName = data[i].DeliveryStopName; 
 		//TODO 添加城市元素 city
 		if(cities.indexOf(city) == -1) {
-			console.log("city: " + city + "index： " + cities.indexOf(city));
+//			console.log("city: " + city + "index： " + cities.indexOf(city));
 			cities.push(city);
 		}
 		//TODO 添加配送点元素 deliveryStopName
@@ -186,7 +185,7 @@ function setOrderList(codeResult) {
 		//城市以及配送点筛选
 		var jsFilter = getCookie("cityJs");
 		if(jsFilter != null) {
-			//			console.log(jsFilter);
+			console.log("banbanban------> "+jsFilter);
 			//生成的城市字符串
 			var jp = JSON.parse(jsFilter);
 			//			console.log(jp.cityIds.length);
@@ -246,7 +245,7 @@ $(function() {
 	//点击全选
 	$("#check_all_order").click(function() {
 
-		$("input").each(function() {
+		$("#order_list input").each(function() {
 			if(!check_order_click) {
 				$(this).prop("checked", false);
 			} else {

@@ -78,14 +78,16 @@ function setDetailData(data) {
 		'</a>';
 	var $so = $(sor);
 	order_detial.append($so);
-
+	
+	var de=JSON.parse(data.Detail)
+//	alert(de);
 	var order_detial_list = $("#order_detial_list");
 	var sd = ""
-	for(var j = 0; j < data.DetailItem.length; j++) {
+	for(var j = 0; j < de.length; j++) {
 //		var orderName = data.DetailItem[j].name;
-		var orderName=data.DetailItem
+		var orderName=de[j].ItemName
 //		var box_count = data.DetailItem[j].box_count;
-		var box_count=data.DetailQuantity;
+		var box_count=de[j].Container;
 		sd = '<div class="weui-cell">' +
 			'<div class="weui-cell__hd"><img src="img/goods.png" alt="" style="width:20px;margin-right:5px;display:block"></div>' +
 			'<div class="weui-cell__bd">' +

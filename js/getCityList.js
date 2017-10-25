@@ -8,7 +8,7 @@ function getCity() {
 }
 
 function setCity(cities) {
-	console.log("cities： "+cities);
+	console.log("cities--： "+cities);
 	//获取城市列表
 	var cityListDetail = $("#city_list_detail");
 	//重新加载清空界面内容
@@ -71,14 +71,14 @@ function setDiction(deliveryStopNames) {
 function setCityList() {
 	delCookie("cityJs"); //清除筛选内容
 
-	if(0 == $("input:checked").length) { //没选择城市或配送点
+	if(0 == $("#city_list input:checked").length) { //没选择城市或配送点
 		alert("请选择城市或者配送点");
 	} else { //选择则拼接为json格式，并保存到订单中
 		//创建筛选条件
 		$("#city_list").hide();
 		$("#order_list").show();
 		var js = '{"cities":[';
-		$("input").each(function() {
+		$("#city_list input").each(function() {
 			if($(this).is(':checked')) {
 				js += '{"city":' + '"' + $(this).val() + '"' + "},";
 			}
