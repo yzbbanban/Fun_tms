@@ -6,14 +6,16 @@ $(function() {
 		 * @return array() 
 		 */
 		urlGet: function() {
-			var aQuery = window.location.href; //取得Get参数 
-			aQuery = aQuery.replace(/%27/g, "\"");
-			aQuery = aQuery.substring(aQuery.lastIndexOf("?") + 1, aQuery.length);
-			aQuery = decodeURI(decodeURI(aQuery)); //js 解码  
-			console.log(aQuery);
-			var aGET = new Array();
-			aGET = aQuery.split("=");
-			return aGET[1];
+			//			var aQuery = window.location.href; //取得Get参数 
+			//			aQuery = aQuery.replace(/%27/g, "\"");
+			//			aQuery = aQuery.substring(aQuery.lastIndexOf("?") + 1, aQuery.length);
+			//			aQuery = decodeURI(decodeURI(aQuery)); //js 解码  
+			//			console.log(aQuery);
+			//			var aGET = new Array();
+			//			aGET = aQuery.split("=");
+			//			return aGET[1];
+			//			alert(getCookie("orderJs"));
+			return getCookie("orderJs")
 		},
 		getOrder: function(allocatedOrder) {
 			allocatedOrderList(allocatedOrder);
@@ -22,13 +24,15 @@ $(function() {
 	$.getOrder($.urlGet());
 });
 
+
 function allocatedOrderList(allocatedOrder) {
+
 	//替换所有字符
 	if(allocatedOrder == null) {
 		return;
 	}
-	//	allocatedOrder = allocatedOrder.replace(/%22/g, '"');
-
+	allocatedOrder = allocatedOrder.replace(/'/g, '"');
+//	alert(allocatedOrder);
 	var aoJs = JSON.parse(allocatedOrder);
 
 	getAllocatedOrderData(aoJs);

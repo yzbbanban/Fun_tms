@@ -97,7 +97,7 @@ $(function() {
 	var check_city_click = true;
 	$("#check_all_city").click(function() {
 
-		$("input").each(function() {
+		$("#city_list input").each(function() {
 			if(!check_city_click) {
 				$(this).prop("checked", false);
 			} else {

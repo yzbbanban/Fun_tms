@@ -15,5 +15,6 @@ function orderDiversion() {
 	orderJs = orderJs.substring(0, orderJs.lastIndexOf(","));
 	orderJs += "]}";
 //	alert(orderJs);
-	$(location).attr('href', 'allocated_order.html?order=' + orderJs);
+	SetCookie("orderJs",orderJs,2);
+	$(location).attr('href', 'allocated_order.html');
 }

@@ -25,7 +25,7 @@ $(function() {
 				//				console.log("aTmp: " + aTmp);
 				aGET[aTmp[0]] = aTmp[1];
 			}
-
+			
 			return aGET;
 		},
 
@@ -41,12 +41,10 @@ $(function() {
 	$.getDetail($.urlGet());
 });
 
-/**
- * 获取车辆信息（车辆信息用于获取订单列表）
- * @param {Object} userID
- */
+
 function getCarDetail(orderNum, weixinId) {
 	SetCookie("orderNum", orderNum, 2);
+
 	//	console.log("1");
 	$.ajax({
 		type: "post",
@@ -116,7 +114,7 @@ function getOrderList() {
 	//数据加载弹窗
 	var $loadingToast = $('#loadingToast');
 	if($loadingToast.css('display') != 'none') return;
-	$loadingToast.fadeIn(100);
+	//$loadingToast.fadeIn(100);
 
 	//获取订单列表数据
 	$.ajax({
@@ -134,15 +132,15 @@ function getOrderList() {
 		success: function(result) {
 			var resOrder = $(result).find("string").text();
 			//获取的订单数据
-			console.log("jsOrder: " + resOrder);
+			//console.log("jsOrder: " + resOrder);
 			var jsOrder = JSON.parse(resOrder);
 			setOrderList(jsOrder);
 			//弹窗消失
-			$loadingToast.fadeOut(100);
+			//$loadingToast.fadeOut(100);
 		},
 		error: function() {
 
-			$loadingToast.fadeOut(100);
+			//$loadingToast.fadeOut(100);
 		}
 	});
 }
@@ -163,7 +161,7 @@ function setOrderList(codeResult) {
 		id=id.replace(/"/g,"'");
  
 //		var id = data[i];
-		console.log("-----------> " + id);
+		//console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
 		var locName = data[i].DeliveryStopName;
 		var count = data[i].TotalContainers;//总数量
@@ -173,19 +171,20 @@ function setOrderList(codeResult) {
 		var city = data[i].City; //城市名称
 		//		var deliveryStopName = data[i].DeliveryStopName; 
 		//TODO 添加城市元素 city
-		if(cities.indexOf(city) == -1) {
-//			console.log("city: " + city + "index： " + cities.indexOf(city));
+		if (cities.indexOf(city) == -1 && city != null) {
+		    //alert("bb: " + cities);
+			//console.log("city: " + city + "index： " + cities.indexOf(city));
 			cities.push(city);
 		}
 		//TODO 添加配送点元素 deliveryStopName
-		if(deliveryStopNames.indexOf(deliveryStopName) == -1) {
+		if(deliveryStopNames.indexOf(deliveryStopName) == -1 && deliveryStopName!=null) {
 			deliveryStopNames.push(deliveryStopName);
 		}
 
 		//城市以及配送点筛选
-		var jsFilter = getCookie("cityJs");
-		if(jsFilter != null) {
-			console.log("banbanban------> "+jsFilter);
+        var jsFilter = getCookie("cityJs");
+		if(jsFilter != "" && jsFilter!=null) {
+			//alert(jsFilter);
 			//生成的城市字符串
 			var jp = JSON.parse(jsFilter);
 			//			console.log(jp.cityIds.length);
@@ -197,20 +196,25 @@ function setOrderList(codeResult) {
 					//										console.log("j:" + jp.cities[j].city);
 					sDiv = getOrderData(orderNum, locName, count, id);
 					setSDiv(orderListMenu, sDiv, orderNum, locName, count, id);
+					
 				}
 			}
 		} else { //生成界面
 			//			console.log("bbbbbb");
 			sDiv = getOrderData(orderNum, locName, count, id);
 			setSDiv(orderListMenu, sDiv, orderNum, locName, count, id);
+			
 		}
 
-	}
+    }
+    //alert("1: "+getCookie("cityJs"));
+    SetCookie("cityJs","",2); //过滤完删除cookie
+    //alert("2: "+getCookie("cityJs"));
 	//	addCookie("codeResult",codeResult,2);
 	//	console.log("codeResult: " + getCookie("codeResult"));
 
-	console.log("cities: " + cities);
-	console.log("deliveryStopNames: " + deliveryStopName);
+	//console.log("cities: " + cities);
+	//console.log("deliveryStopNames: " + deliveryStopName);
 	//初始化城市、配送点界面
 	addCookie("cities", cities, 2);
 	addCookie("deliveryStopNames", deliveryStopNames, 2);
@@ -245,7 +249,7 @@ $(function() {
 	//点击全选
 	$("#check_all_order").click(function() {
 
-		$("#order_list input").each(function() {
+	    $("#order_list input").each(function () {
 			if(!check_order_click) {
 				$(this).prop("checked", false);
 			} else {
