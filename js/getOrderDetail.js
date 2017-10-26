@@ -7,7 +7,8 @@ $(function() {
 		 */
 		urlGet: function() {
 			var aQuery = window.location.href; //取得Get参数 
-			aQuery = aQuery.replace(/%27/g, "\"");
+//			console.log(aQuery);
+//			aQuery = aQuery.replace(/%27/g, "\"");
 
 //			console.log(aQuery);
 
@@ -20,17 +21,37 @@ $(function() {
 			return aGET[1];
 		},
 
-		getDetail: function(detailJs) {
-			getDetailData(detailJs);
+		getDetail: function(detailId) {
+			getDetailData(detailId);
 		}
 	});
 	$.getDetail($.urlGet());
 });
 
-function getDetailData(detailJs) {
-	console.log("-----------> " + detailJs);
-	var data =JSON.parse(detailJs);
-	setDetailData(data);
+function getDetailData(detailId) {
+//	console.log(detailId);
+
+	$.ajax({
+		type:"post",
+		url:"http://fleet01.elocation.com.cn/WebService_API/API_TMS_Service.asmx/QUR_ORDER_CTRANSSHIPMENT",
+		async:true,
+		data:{
+			"BatchNo":getCookie("BatchNo"),
+			"OrdecrList":detailId,
+			"CheckKey":""
+		},
+		dataType: "xml",
+		success:function(result){
+//			console.log("-----d------> " + result);
+			var jsDetail = $(result).find("string").text(); //获取其中的json字符串
+			var detail = JSON.parse(jsDetail); //转换为object对象
+			setDetailData(detail[0]);
+		},
+		error:function(){
+			alert("数据出错");
+		}
+	});
+	
 }
 
 function setDetailData(data) {
@@ -39,12 +60,12 @@ function setDetailData(data) {
 	//DeliveryStopAddr
 	//DetailQuantity
 
-	//		alert(id);
+//			alert(data);
 	var city = data.City;
 	var orderNum = data.OrderNo;
 	var locName = data.DeliveryStopAddr;
 	var loc = data.DeliveryStopName;
-	//			alert("ss")
+//	alert(city);
 	var order_detial = $("#order_detial");
 	var sor = "";
 	sor = '<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">' +

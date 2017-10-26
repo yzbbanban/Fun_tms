@@ -15,7 +15,8 @@ $(function() {
 			//			aGET = aQuery.split("=");
 			//			return aGET[1];
 			//			alert(getCookie("orderJs"));
-			return getCookie("orderJs")
+			//			console.log(getCookie("orderDivJs"));
+			return getCookie("orderDivJs");
 		},
 		getOrder: function(allocatedOrder) {
 			allocatedOrderList(allocatedOrder);
@@ -24,18 +25,38 @@ $(function() {
 	$.getOrder($.urlGet());
 });
 
-
 function allocatedOrderList(allocatedOrder) {
-
+	console.log(allocatedOrder);
 	//替换所有字符
 	if(allocatedOrder == null) {
 		return;
 	}
-	allocatedOrder = allocatedOrder.replace(/'/g, '"');
-//	alert(allocatedOrder);
-	var aoJs = JSON.parse(allocatedOrder);
+	//	allocatedOrder = allocatedOrder.replace(/'/g, '"');
+	//	alert(allocatedOrder);
+	//	var aoJs = JSON.parse(allocatedOrder);
+	$.ajax({
+		type: "post",
+		url: "http://fleet01.elocation.com.cn/WebService_API/API_TMS_Service.asmx/QUR_ORDER_CTRANSSHIPMENT",
+		async: true,
+		data: {
+			"BatchNo": getCookie("BatchNo"),
+			"OrdecrList": allocatedOrder,
+			"CheckKey": ""
+		},
+		dataType: "xml",
+		success: function(result) {
+			//			console.log("-----d------> " + result);
+			var jsDetail = $(result).find("string").text(); //获取其中的json字符串
+			var aoJs = JSON.parse(jsDetail); //转换为object对象
+			console.log(aoJs);
+			getAllocatedOrderData(aoJs);
+		},
+		error: function() {
+			alert("数据出错");
+		}
+	});
 
-	getAllocatedOrderData(aoJs);
+	getAllocatedOrderData();
 
 }
 
@@ -44,14 +65,15 @@ function getAllocatedOrderData(aoJs) {
 	var allocated_order_loc_count = 0;
 	var allocated_order_loc_box_count = 0;
 	var orderNoJs = "{orderNo,"
-	for(var i = 0; i < aoJs.orderJs.length; i++) {
-		var id = JSON.stringify(aoJs.orderJs[i]);
-		id = id.replace(/"/g, "'");
-		var orderNum = aoJs.orderJs[i].OrderNo; //订单号
-		var locName = aoJs.orderJs[i].DeliveryStopName; //配送点名字
-		var city = aoJs.orderJs[i].City; //城市
-		var loc = aoJs.orderJs[i].DeliveryStopAddr; //配送点地址
-		var count = parseInt(aoJs.orderJs[i].TotalVolume); //总箱数
+	for(var i = 0; i < aoJs.length; i++) {
+		//		var id = JSON.stringify(aoJs[i]);
+		//		id = id.replace(/"/g, "'");
+		var id = aoJs[i].OrderNo;
+		var orderNum = aoJs[i].OrderNo; //订单号
+		var locName = aoJs[i].DeliveryStopName; //配送点名字
+		var city = aoJs[i].City; //城市
+		var loc = aoJs[i].DeliveryStopAddr; //配送点地址
+		var count = parseInt(aoJs[i].TotalVolume); //总箱数
 
 		var allocatedOrder = $("#allocated_order");
 		var aso = "";

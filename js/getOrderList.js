@@ -32,10 +32,10 @@ $(function() {
 		getDetail: function(aGET) {
 			//			console.log(aGET["ID"]);
 			//从aGet获取装载号，weixinId
-			//SetCookie("");//存储装载号
+			SetCookie("BatchNo",558485632,2);//存储装载号
 			//SetCookie("");//存储weinxinID
 			//558485632
-			getCarDetail("477838321", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
+			getCarDetail("558485632", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
 		}
 	});
 	$.getDetail($.urlGet());
@@ -157,10 +157,10 @@ function setOrderList(codeResult) {
 	var cities = [];
 	var deliveryStopNames = [];
 	for(var i = 0; i < data.length; i++) {
-		var id = JSON.stringify(data[i]);
-		id=id.replace(/"/g,"'");
+//		var id = JSON.stringify(data[i]);
+//		id=id.replace(/"/g,"'");
  
-//		var id = data[i];
+		var id = data[i].OrderNo;
 		//console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
 		var locName = data[i].DeliveryStopName;
