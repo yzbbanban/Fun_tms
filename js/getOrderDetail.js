@@ -63,8 +63,8 @@ function setDetailData(data) {
 //			alert(data);
 	var city = data.City;
 	var orderNum = data.OrderNo;
-	var locName = data.DeliveryStopAddr;
-	var loc = data.DeliveryStopName;
+	var locName = data.DeliveryStopName;
+	var loc = data.DeliveryStopAddr;
 //	alert(city);
 	var order_detial = $("#order_detial");
 	var sor = "";

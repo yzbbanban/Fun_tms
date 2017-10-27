@@ -132,7 +132,7 @@ function getOrderList() {
 		success: function(result) {
 			var resOrder = $(result).find("string").text();
 			//获取的订单数据
-			//console.log("jsOrder: " + resOrder);
+			console.log("jsOrder: " + resOrder);
 			var jsOrder = JSON.parse(resOrder);
 			setOrderList(jsOrder);
 			//弹窗消失
@@ -163,7 +163,7 @@ function setOrderList(codeResult) {
 		var id = data[i].OrderNo;
 		//console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
-		var locName = data[i].DeliveryStopName;
+		var locName = data[i].DeliveryStopName;//配送点名称
 		var count = data[i].TotalContainers;//总数量
 		var cId = data[i].DeliveryStopAddr;//配送点地址
 		var lId = data[i].Ship_To_Name;
@@ -272,10 +272,11 @@ $(function() {
  */
 function getOrderData(orderNum, locName, count, id) {
 	var sd = "";
+	var compJs=""+id+","+locName;
 	sd += '<div class="weui-cells weui-cells_checkbox">';
 	sd += '<label class="weui-cell weui-check__label" >';
 	sd += '<div class="weui-cell__hd">';
-	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value="' + id + '"/>';
+	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value="' +compJs+ '"/>';
 	sd += '<i class="weui-icon-checked"></i>';
 	sd += '</div>';
 	sd += '<div class="weui-panel__bd" style="font-size: 10px;width: 100%;">';

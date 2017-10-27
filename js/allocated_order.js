@@ -19,6 +19,7 @@ $(function() {
 			return getCookie("orderDivJs");
 		},
 		getOrder: function(allocatedOrder) {
+//			console.log("aaaa--->"+allocatedOrder);
 			allocatedOrderList(allocatedOrder);
 		}
 	});
@@ -26,7 +27,7 @@ $(function() {
 });
 
 function allocatedOrderList(allocatedOrder) {
-	console.log(allocatedOrder);
+//	console.log("bbb--->"+allocatedOrder);
 	//替换所有字符
 	if(allocatedOrder == null) {
 		return;

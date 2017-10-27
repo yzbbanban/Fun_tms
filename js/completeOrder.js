@@ -15,22 +15,20 @@ $(function() {
 function getCompleteOrderList(status) {
 	//选取的订单
 	//设置传送的href
-	var msg = '{"status":' + status + ',"orderNo":[';
-	$("input").each(function() {
+	var locationName = "";
+	$("#order_list input").each(function() {
 		var i = 0;
 		if($(this).is(':checked')) {
 			//			console.log("--------------------")
 			var v = $(this).val();
-			v = v.replace(/'/g, "\"");
-//			console.log("===============> " + v);
-			var data = JSON.parse(v);
-//			console.log("===============> " + data.OrderNo);
-			//			js = js.OrderNo;
-			msg += data.OrderNo + ",";
+			//			console.log("===============> " + v);
+			var data = v.split(",");
+			var deliveryStopName = data[1];
+			if(locationName.indexOf(deliveryStopName) == -1 && deliveryStopName!= null) {
+				locationName += "" + deliveryStopName + ",";;
+			}
 		}
 	});
-	msg = msg.substring(0, msg.lastIndexOf(","));
-	msg += "]}";
-	console.log("==msg====msg===msg==msg===msg=> " + msg);
-	$(location).attr('href', 'take_photos.html?orderNo=' + msg);
+	console.log("--------> " + locationName);
+	$(location).attr('href', 'take_photos.html?locationName=' + locationName + '&shippingno=' + getCookie("BatchNo"));
 }
