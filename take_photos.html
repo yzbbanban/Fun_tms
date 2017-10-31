@@ -11,20 +11,34 @@
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script src="js/cookie_util.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/takePhoto.js" type="text/javascript" charset="utf-8"></script>
-		
+
 	</head>
 
 	<body>
 		<div id="exception_reason" class="weui-cells weui-cells_form">
 			<div class="weui-cell">
 				<div class="weui-cell__bd">
-					<textarea class="weui-textarea" placeholder="请输入" rows="3"></textarea>
-					<div class="weui-textarea-counter"><span>0</span>/200</div>
+					<textarea id="textArea1" class="weui-textarea" placeholder="请输入" rows="3"></textarea>
+					<div id="textCount" class="weui-textarea-counter"><span>0</span>/50</div>
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+			$(function() {
+				$("#textArea1").keydown(function() {
+					var curLength = $("#textArea1").val().length;
+					if(curLength >= 50) {
+						var num = $("#textArea1").val().substr(0, 4);
+						$("#textArea1").val(num);
+						alert("超过字数限制，多出的字将被截断！");
+					} else {
+						$("#textCount").text($("#textArea1").val().length + 1 + "/50");
+					}
+				})
+			});
+		</script>
 		<div class="weui-gallery" id="gallery">
-			<span class="weui-gallery__img" id="galleryImg"></span>
+			<img class="weui-gallery__img" style="width: 100%; height: auto;max-width: 100%; display: block;" id="galleryImg" />
 			<div class="weui-gallery__opr">
 				<a href="javascript:" class="weui-gallery__del">
 					<i class="weui-icon-delete weui-icon_gallery-delete"></i>
@@ -38,23 +52,12 @@
 					<div class="weui-uploader">
 						<div class="weui-uploader__hd">
 							<p class="weui-uploader__title">图片上传</p>
-							<div class="weui-uploader__info">0/2</div>
+							<div class="weui-uploader__info">0/1</div>
 						</div>
 						<div class="weui-uploader__bd">
 							<ul class="weui-uploader__files" id="uploaderFiles">
-								<!--<li class="weui-uploader__file" style="background-image:url(./img/pic_160.png)"></li>
-								<li class="weui-uploader__file" style="background-image:url(./img/pic_160.png)"></li>
-								<li class="weui-uploader__file" style="background-image:url(./img/pic_160.png)"></li>
-								<li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(./img/pic_160.png)">
-									<div class="weui-uploader__file-content">
-										<i class="weui-icon-warn"></i>
-									</div>
-								</li>
-								<li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(./img/pic_160.png)">
-									<div class="weui-uploader__file-content">50%</div>
-								</li>-->
 							</ul>
-							<div class="weui-uploader__input-box">
+							<div class="weui-uploader__input-box" id="text1">
 								<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple/>
 							</div>
 						</div>
@@ -62,9 +65,10 @@
 				</div>
 			</div>
 		</div>
+		<input type="hidden" id="orderStatus" />
 		<script type="text/javascript">
 			$(function() {
-				var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+				var tmpl = '<li class="weui-uploader__file"><img id="cImg" alt=""  width="77px" height="77px" src="#url#"/></li>',
 					$gallery = $("#gallery"),
 					$galleryImg = $("#galleryImg"),
 					$uploaderInput = $("#uploaderInput"),
@@ -81,24 +85,34 @@
 						} else {
 							src = e.target.result;
 						}
-
+						$("#text1").hide();
 						$uploaderFiles.append($(tmpl.replace('#url#', src)));
 					}
 				});
-				$uploaderFiles.on("click", "li", function() {
-					$galleryImg.attr("style", this.getAttribute("style"));
+				$uploaderFiles.on("click", "img", function() {
+					$galleryImg.attr("src", this.getAttribute("src"));
 					$gallery.fadeIn(100);
 				});
 				$gallery.on("click", function() {
+
 					$gallery.fadeOut(100);
 				});
 			});
 		</script>
 		<div class="weui-tabbar weui-footer weui-footer_fixed-bottom">
 			<div style="margin: 10px auto;">
+				<a href="#" class="weui-btn weui-btn_primary" onclick="Normal_Sign()" id="completeOrder">正常结案</a>
+			</div>
+			<div style="margin: 10px auto;">
+				<a href="#" class="weui-btn weui-btn_primary" style="visibility:hidden" onclick="AbNormal_Sign()" id="errorOrder">异常结案</a>
+			</div>
+		</div>
+		<div class="weui-tabbar weui-footer weui-footer_fixed-bottom">
+			<div style="margin: 10px auto;">
 				<a href="#" id="uploadData" class="weui-btn weui-btn_primary">确认</a>
 			</div>
 		</div>
+	
 	</body>
 
 </html>

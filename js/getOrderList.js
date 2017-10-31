@@ -25,22 +25,21 @@ $(function() {
 				//				console.log("aTmp: " + aTmp);
 				aGET[aTmp[0]] = aTmp[1];
 			}
-			
+
 			return aGET;
 		},
 
 		getDetail: function(aGET) {
 			//			console.log(aGET["ID"]);
 			//从aGet获取装载号，weixinId
-			SetCookie("BatchNo",558485632,2);//存储装载号
-			//SetCookie("");//存储weinxinID
+			SetCookie("BatchNo", 856514212, 2); //存储装载号
+			SetCookie(aGET["ID"]);//存储weinxinID
 			//558485632
-			getCarDetail("558485632", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
+			getCarDetail("856514212", "oAYYRxCY_PoUPldf7ZVcGwkQxNk8");
 		}
 	});
 	$.getDetail($.urlGet());
 });
-
 
 function getCarDetail(orderNum, weixinId) {
 	SetCookie("orderNum", orderNum, 2);
@@ -65,7 +64,7 @@ function getCarDetail(orderNum, weixinId) {
 			SetCookie("UserPho", jsCar[0].UserPho, 2);
 			SetCookie("WeChatID", jsCar[0].WeChatID, 2);
 			SetCookie("IPNO", jsCar[0].IPNO, 2);
-//			console.log(getCookie("UserName")+"："+getCookie("UserPho"));
+			//			console.log(getCookie("UserName")+"："+getCookie("UserPho"));
 			//			console.log("1.success");
 		},
 		error: function() {
@@ -92,7 +91,7 @@ function getCarDetail(orderNum, weixinId) {
 			SetCookie("UserID", jsUser[0].UserID, 2);
 			SetCookie("Comp", jsUser[0].Comp, 2);
 			SetCookie("SubComp", jsUser[0].UserPwd, 2);
-//			console.log(getCookie("Comp")+"："+getCookie("UserID"));
+			//			console.log(getCookie("Comp")+"："+getCookie("UserID"));
 			getOrderList();
 			//console.log("2.success");
 		},
@@ -110,7 +109,7 @@ function getCarDetail(orderNum, weixinId) {
  * 获取订单类表数据
  */
 function getOrderList() {
-//		console.log(getCookie("Comp")+"："+getCookie("UserID"));
+	//		console.log(getCookie("Comp")+"："+getCookie("UserID"));
 	//数据加载弹窗
 	var $loadingToast = $('#loadingToast');
 	if($loadingToast.css('display') != 'none') return;
@@ -125,7 +124,7 @@ function getOrderList() {
 			'Comp': getCookie("Comp"),
 			'UserID': getCookie("UserID"),
 			'QueryNo': 'queryOrderList',
-			'Params': '{"BatchNo":"' + getCookie("orderNum") + '"}',
+			'Params': '{"BatchNo":"' + getCookie("orderNum") + '","UserID":"'+getCookie("WeChatID")+'"}',
 			'CheckKey': ''
 		},
 		dataType: "xml",
@@ -139,7 +138,6 @@ function getOrderList() {
 			//$loadingToast.fadeOut(100);
 		},
 		error: function() {
-
 			//$loadingToast.fadeOut(100);
 		}
 	});
@@ -157,33 +155,33 @@ function setOrderList(codeResult) {
 	var cities = [];
 	var deliveryStopNames = [];
 	for(var i = 0; i < data.length; i++) {
-//		var id = JSON.stringify(data[i]);
-//		id=id.replace(/"/g,"'");
- 
+		//		var id = JSON.stringify(data[i]);
+		//		id=id.replace(/"/g,"'");
+
 		var id = data[i].OrderNo;
 		//console.log("-----------> " + id);
 		var orderNum = data[i].OrderNo;
-		var locName = data[i].DeliveryStopName;//配送点名称
-		var count = data[i].TotalContainers;//总数量
-		var cId = data[i].DeliveryStopAddr;//配送点地址
+		var locName = data[i].DeliveryStopName; //配送点名称
+		var count = data[i].TotalContainers; //总数量
+		var cId = data[i].DeliveryStopAddr; //配送点地址
 		var lId = data[i].Ship_To_Name;
 		var deliveryStopName = data[i].DeliveryStopName; //配送点名称
 		var city = data[i].City; //城市名称
 		//		var deliveryStopName = data[i].DeliveryStopName; 
-		//TODO 添加城市元素 city
-		if (cities.indexOf(city) == -1 && city != null) {
-		    //alert("bb: " + cities);
+		// 添加城市元素 city
+		if(cities.indexOf(city) == -1 && city != null) {
+			//alert("bb: " + cities);
 			//console.log("city: " + city + "index： " + cities.indexOf(city));
 			cities.push(city);
 		}
-		//TODO 添加配送点元素 deliveryStopName
-		if(deliveryStopNames.indexOf(deliveryStopName) == -1 && deliveryStopName!=null) {
+		//添加配送点元素 deliveryStopName
+		if(deliveryStopNames.indexOf(deliveryStopName) == -1 && deliveryStopName != null) {
 			deliveryStopNames.push(deliveryStopName);
 		}
 
 		//城市以及配送点筛选
-        var jsFilter = getCookie("cityJs");
-		if(jsFilter != "" && jsFilter!=null) {
+		var jsFilter = getCookie("cityJs");
+		if(jsFilter != "" && jsFilter != null) {
 			//alert(jsFilter);
 			//生成的城市字符串
 			var jp = JSON.parse(jsFilter);
@@ -196,20 +194,20 @@ function setOrderList(codeResult) {
 					//										console.log("j:" + jp.cities[j].city);
 					sDiv = getOrderData(orderNum, locName, count, id);
 					setSDiv(orderListMenu, sDiv, orderNum, locName, count, id);
-					
+
 				}
 			}
 		} else { //生成界面
 			//			console.log("bbbbbb");
 			sDiv = getOrderData(orderNum, locName, count, id);
 			setSDiv(orderListMenu, sDiv, orderNum, locName, count, id);
-			
+
 		}
 
-    }
-    //alert("1: "+getCookie("cityJs"));
-    SetCookie("cityJs","",2); //过滤完删除cookie
-    //alert("2: "+getCookie("cityJs"));
+	}
+	//alert("1: "+getCookie("cityJs"));
+	SetCookie("cityJs", "", 2); //过滤完删除cookie
+	//alert("2: "+getCookie("cityJs"));
 	//	addCookie("codeResult",codeResult,2);
 	//	console.log("codeResult: " + getCookie("codeResult"));
 
@@ -249,7 +247,7 @@ $(function() {
 	//点击全选
 	$("#check_all_order").click(function() {
 
-	    $("#order_list input").each(function () {
+		$("#order_list input").each(function() {
 			if(!check_order_click) {
 				$(this).prop("checked", false);
 			} else {
@@ -272,15 +270,15 @@ $(function() {
  */
 function getOrderData(orderNum, locName, count, id) {
 	var sd = "";
-	var compJs=""+id+","+locName;
+	var compJs = "" + id + "," + locName;
 	sd += '<div class="weui-cells weui-cells_checkbox">';
 	sd += '<label class="weui-cell weui-check__label" >';
 	sd += '<div class="weui-cell__hd">';
-	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value="' +compJs+ '"/>';
+	sd += '<input type="checkbox" class="weui-check" name="checkbox1" value="' + compJs + '"/>';
 	sd += '<i class="weui-icon-checked"></i>';
 	sd += '</div>';
 	sd += '<div class="weui-panel__bd" style="font-size: 10px;width: 100%;">';
-	sd += '<a href="order_detail.html?order_id= '+id+'" class="weui-media-box weui-media-box_appmsg" >';
+	sd += '<a href="order_detail.html?order_id= ' + id + '" class="weui-media-box weui-media-box_appmsg" >';
 	sd += '<div class="weui-media-box__bd">';
 	sd += '<div class="weui-cell">';
 	sd += '<div class="weui-cell__hd"><img src="img/order.png" alt="" class="order_img"></div>';

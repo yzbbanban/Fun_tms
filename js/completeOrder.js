@@ -16,19 +16,30 @@ function getCompleteOrderList(status) {
 	//选取的订单
 	//设置传送的href
 	var locationName = "";
+	var areaName="";
+	var order_name="";
+	var checkCity = 0;//只允许相同城市
 	$("#order_list input").each(function() {
 		var i = 0;
+		
 		if($(this).is(':checked')) {
-			//			console.log("--------------------")
 			var v = $(this).val();
-			//			console.log("===============> " + v);
 			var data = v.split(",");
 			var deliveryStopName = data[1];
-			if(locationName.indexOf(deliveryStopName) == -1 && deliveryStopName!= null) {
-				locationName += "" + deliveryStopName + ",";;
-			}
+			var order_no=data[0];
+			if(locationName.indexOf(deliveryStopName) == -1 && deliveryStopName != null) {//不同城市添加
+				locationName += ("" + deliveryStopName + ",");
+				checkCity++;
+			} 
+
+			order_name += ("" + order_no + ",");
 		}
 	});
+	if(checkCity > 1) {
+		alert("请选择相同城市的订单");
+		return;
+	}
 	console.log("--------> " + locationName);
-	$(location).attr('href', 'take_photos.html?locationName=' + locationName + '&shippingno=' + getCookie("BatchNo"));
+	$(location).attr('href', 'take_photos.html?locationName=' + locationName + '&shippingno=' 
+	+ getCookie("BatchNo")+"&status="+status+ '&order_name=' + order_name);
 }
